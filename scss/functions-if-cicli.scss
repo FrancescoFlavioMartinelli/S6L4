@@ -1,0 +1,150 @@
+
+//FUNCTIONS @function - la funzione esegue della logica e restituisce (@return) un valore finale
+//a differenza del mixing che "restistuisce" un set di regole (e queries, selettori, ecc)
+
+//alcune funzioni utili già pronte sono (alcune esistono anche in css)
+div {
+    background-image: url("https://picsum.photos/200/300");
+    padding-left: 20px;
+    width: calc(100% - 20px);
+    border-color: lighten(green, 10%)
+}
+
+@function f($a, $b) {
+    @return ($a + $b)+px;
+}
+
+@function rem($px, $rootSize: 16) {
+    @return ($px / $rootSize) * 1rem;
+}
+
+p {
+    font-size: rem(50);
+}
+
+//if
+//può essere usati sia nelle funzioni sia mixin
+@function textColor($bgc) {
+    @if (lightness($bgc) > 50) {
+        @return black;
+    }
+
+    @else {
+        @return white;
+    }
+}
+
+@mixin theme($backgroundColor, $darkThemeOn:false) {
+    background-color: $backgroundColor;
+    color: textColor($backgroundColor);
+    &:hover {
+        @if $darkThemeOn {
+            background-color: black;
+        }
+        @else {
+            background-color: white;
+        }
+    }
+}
+
+$bg: #ffff87;
+
+span {
+    // background-color: $bg;
+    @include theme($bg, true)
+}
+
+//cicli each for e while - @each @for @while
+//@each serve per le liste di dati
+// .foto-a {
+//     background-image: url("dir/to/photos/a.png");
+// }
+// .foto-b {
+//     background-image: url("dir/to/photos/b.png");
+// }
+// .foto-c {
+//     background-image: url("dir/to/photos/c.png");
+// }
+// .foto-d {
+//     background-image: url("dir/to/photos/d.png");
+// }
+// .foto {
+//     &-a {
+//         background-image: url("dir/to/photos/a.png");
+//     }
+//     &-b {
+//         background-image: url("dir/to/photos/b.png");
+//     }
+//     &-c {
+//         background-image: url("dir/to/photos/c.png");
+//     }
+//     &-d {
+//         background-image: url("dir/to/photos/d.png");
+//     }
+// }
+
+@mixin fotoBg($foto) {
+    &-#{$foto}{ background-image: url("dir/to/photo/"+$foto+".png"); }
+}
+
+// .foto {
+//     @include fotoBg("a");
+//     @include fotoBg("b");
+//     @include fotoBg("c");
+//     @include fotoBg("d");
+// }
+
+$photos: "a", "b", "c", "d";
+.foto {
+    @each $p in $photos {
+        // &-#{$p} { background-image: url("dir/to/photo/"+$p+".png")}
+        @include fotoBg($p);
+    }
+}
+
+
+$div: ("span", black, false, 5),(".classe", red, true, 20),("h1 p", blue, true, 5);
+
+@mixin defaultDiv($bg, $bordered, $pad) {
+    background-color: $bg;
+    padding: $pad;
+    @if $bordered {
+        border: solid 1px black;
+    } @else {
+        border: none;
+    }
+}
+
+@each $Dsel, $Dbg, $Dbordered, $Dpad in $div {
+    // @include deafultDiv($Dsel, $Dbg, $Dbordered, $Dpad);
+    // #{$Dsel} {
+    //     background-color: $Dbg;
+    //     padding: $Dpad;
+    //     @if $Dbordered {
+    //         border: solid 1px black;
+    //     } @else {
+    //         border: none;
+    //     }
+    // }
+}
+
+//@for
+@for $i from 1 through 3 {
+    li:nth-of-type(#{$i}){
+        font-size: $i * 10px;
+    }
+}
+@for $i from 1 to 3 {}
+
+//@while
+$j: 0;
+@while $j < 5 {
+    li:nth-of-type(#{$j}){
+        font-size: $j * 10px;
+    }
+    .foto-#{$j}{
+        margin-left: 10px * $j;
+    }
+    //l'operazione di aumento va fouri da ogni output del while
+    $j: $j+1;
+}

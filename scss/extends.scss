@@ -1,0 +1,63 @@
+//EXTEND @extend - riprotare il css di una classe all'interno di un altro selettore
+//.button e .accept hanno diverse proprietà uguali, .accept ha una proprietà in più
+// .button,
+// .accept {
+//     @include radius(5px);
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     padding: 10px 15px;
+//     &:hover {
+//         background-color: transparent;
+//         color: purple;
+//     }
+// }
+// .accept {
+//     background-color: green;
+// }
+.accept {
+    @include radius(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: green;
+    transition: all .3s ease;
+
+    &:hover {
+        background-color: transparent;
+        color: purple;
+    }
+}
+
+.refuse {
+    @extend .accept;
+    background-color: red;
+}
+
+//la differenza tra mixin e extend è nella compilazione
+//mixin aggiungerà le proprietà al selettore
+//extend creerà un selettore multiplo con le stesse proprietà (più ottimizzato)
+@mixin provaExtend {
+    @include radius(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: green;
+    transition: all .3s ease;
+
+    &:hover {
+        background-color: transparent;
+        color: purple;
+    }
+}
+
+.acceptProva {
+    @include provaExtend;
+}
+
+.refuseProva {
+    @include provaExtend;
+    background-color: red;
+}

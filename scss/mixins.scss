@@ -1,0 +1,276 @@
+
+@mixin testMixin {
+    color: #f00;
+    font-weight: bold;
+}
+
+//Il mixin (come le funzioni) possono avere parametri
+// @mixin radius($rad) {
+//     border: solid 1px black;
+//     border-radius: $rad;
+//     padding: 5px;
+// }
+//Il parametro puo avere un valore di default (se non specificato quando includiamo il mixing la variabile avrà quel valore
+//Attenzione che i parametri di default non possono essere "saltati"
+@mixin radius($rad, $color:black) {
+    border: solid 1px $color;
+    border-radius: $rad;
+    padding: 5px;
+}
+
+//L'operatore ... dopo un parametro specifica che quel parametro può avere un qualunque numero di parametri (utile per regole con input multipli (padding, margin ecc)
+@mixin padded($pad...) {
+    padding: $pad;
+}
+
+// @mixin padded($padT, $padR, $padB, $padL) {
+//     padding: $padT $padR $padB $padL;
+//     padding: 5px;
+// }
+
+//Interpolazione #{} - iniettare il codice, completare il nome di una proprietà usando una variabile
+@mixin customBorder($side, $color:black, $style:solid, $size:1px) {
+    border-#{$side}: $size $style $color;
+}
+
+@mixin background($prop, $val) {
+    background-#{$prop}: $val;
+}
+
+$spacer: 1rem;
+
+@mixin margin($side, $coeff:1) {
+    margin-#{$side}: $coeff * $spacer;
+}
+
+// @mixin marginT($coeff:1) {
+//     margin-top: $coeff * $spacer;
+// }
+// @mixin marginB($coeff:1) {
+//     margin-bottom: $coeff * $spacer;
+// }
+
+h4 {
+    @include customBorder("top");
+    @include customBorder("bottom", green);
+    @include customBorder("left", blue, dashed);
+    @include customBorder("right", blue, dashed, 4px);
+
+    // @include background("image", url('https://picsum.photos/200/300'))
+    @include background("color", #0f0);
+
+    @include margin("top", 3);
+    @include margin("left", 5);
+    // margin-top: 3 * $spacer;
+}
+
+
+
+p {
+    padding-left: 30px;
+    @include testMixin;
+    @include radius(2px);
+}
+
+h2 {
+    @include radius(5px, green);
+
+}
+
+h3 {
+    @include radius(10px);
+    @include padded(10px 30px 50px);
+}
+
+//@content
+//Media Queries - in sass possiamo inserire le media queries dentro al selettore parent
+
+//Normalemnte ripetiamo i tag dentro alle media queries
+// @media screen and (max-width: 700px) {
+//     .responsive {
+//         @include background("color", purple)
+//     }
+// }
+//In sass inseriamo le queries nel selttore
+.responsive {
+    @include background("color", blue);
+
+    @media screen and (max-width: 700px) {
+        @include background("color", purple);
+    }
+}
+
+//siccome possiamo inserire lequeries direttamente nel selettore, possiamo inserire le queries in un mixin che le inserirà nei selettori
+// @mixin responsive {
+//     @media screen and (max-width: 700px) {
+//         @include background("color", purple);
+//     }
+// }
+//In questo caso sopra la queruy potra cambiare solo il backgorund, limitando l'uso di questo mixin
+//possiamo usare @content per scrivere all'interno del mixin quando lo includiamo
+@mixin responsive($maxSize:768px) {
+    @media screen and (max-width: $maxSize) {
+        @content; //content verrà sostituito con il contenuto delle {} quando includiamo il mixin
+    }
+}
+
+.resp {
+    @include background("color", blue);
+
+    @include responsive {
+        @include background("color", purple);
+        padding-top: 50px;
+        font-size: 3em;
+    }
+
+    ;
+}
+
+@mixin hover {
+    &:hover {
+        @content;
+    }
+}
+
+$screens: ("xs": 500px,
+    "s": 600px,
+    "md": 768px,
+    "lg": 1024px);
+
+h2 {
+    color: blue;
+
+    @include responsive {
+        color: green;
+    }
+
+    @include responsive(map-get($screens, "xs")) {
+        color: purple;
+
+        @include hover {
+            font-size: 10px;
+        }
+    }
+}
+
+@mixin generatePartialClass($part) {
+    &-#{$part} {
+        @content;
+        width: 100%;
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+.card {
+
+    // &-head == .card-head
+    @include generatePartialClass("head") {
+        color: red;
+    }
+
+    @include generatePartialClass("body") {
+        color: blue;
+    }
+
+    @include generatePartialClass("foot") {
+        color: green;
+    }
+
+    // &-body {
+    //     width: 100%;
+    //     position: relative;
+    //     display: flex;
+    //     justify-content: space-between;
+
+    //     color: blue;
+
+    // }
+
+    // &-head {
+    //     width: 100%;
+    //     position: relative;
+    //     display: flex;
+    //     justify-content: space-between;
+
+    //     color: red;
+
+    // }
+
+    // &-foot {
+    //     width: 100%;
+    //     position: relative;
+    //     display: flex;
+    //     justify-content: space-between;
+
+    //     color: green;
+
+    // }
+
+}
+
+
+.table {
+    @include generatePartialClass("head") {
+        font-weight: bold;
+    }
+
+    @include generatePartialClass("odd") {
+        //&-odd == .table-odd {}
+        background-color: grey;
+    }
+}
+
+
+@mixin keyframes($name) {
+    @-webkit-keyframes #{$name} {
+        @content;
+    }
+
+    @-moz-keyframes #{$name} {
+        @content;
+    }
+
+    @keyframes #{$name} {
+        @content;
+    }
+}
+
+@mixin transform($trasfromazione...) {
+    transform: $trasfromazione;
+    -webkit-transform: $trasfromazione;
+    -moz-transform: $trasfromazione;
+    -o-transform: $trasfromazione;
+}
+
+h1 {
+    @include transform(translateX(50%) scale(120%));
+}
+
+// @-webkit-keyframes animationName {
+//     from {
+//         opacity: 0;
+//     }
+//     to {
+//         opacity: 1;
+//     }
+// }
+// @keyframes animationName {
+//     from {
+//         opacity: 0;
+//     }
+//     to {
+//         opacity: 1;
+//     }
+// }
+
+@include keyframes("animationName") {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
