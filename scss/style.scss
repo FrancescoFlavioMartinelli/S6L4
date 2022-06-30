@@ -1,495 +1,517 @@
 @import "variables";
-@import "mixins";
+// @import "mixins";
 @import "functions";
 
+@import "../node_modules/bootstrap-scss/bootstrap.scss";
 
-@mixin testMixin {
-    color: #f00;
-    font-weight: bold;
-}
+// @mixin testMixin {
+//     color: #f00;
+//     font-weight: bold;
+// }
 
-//Il mixin (come le funzioni) possono avere parametri
-// @mixin radius($rad) {
-//     border: solid 1px black;
+// //Il mixin (come le funzioni) possono avere parametri
+// // @mixin radius($rad) {
+// //     border: solid 1px black;
+// //     border-radius: $rad;
+// //     padding: 5px;
+// // }
+// //Il parametro puo avere un valore di default (se non specificato quando includiamo il mixing la variabile avrà quel valore
+// //Attenzione che i parametri di default non possono essere "saltati"
+// @mixin radius($rad, $color:black) {
+//     border: solid 1px $color;
 //     border-radius: $rad;
 //     padding: 5px;
 // }
-//Il parametro puo avere un valore di default (se non specificato quando includiamo il mixing la variabile avrà quel valore
-//Attenzione che i parametri di default non possono essere "saltati"
-@mixin radius($rad, $color:black) {
-    border: solid 1px $color;
-    border-radius: $rad;
-    padding: 5px;
-}
 
-//L'operatore ... dopo un parametro specifica che quel parametro può avere un qualunque numero di parametri (utile per regole con input multipli (padding, margin ecc)
-@mixin padded($pad...) {
-    padding: $pad;
-}
-
-// @mixin padded($padT, $padR, $padB, $padL) {
-//     padding: $padT $padR $padB $padL;
-//     padding: 5px;
+// //L'operatore ... dopo un parametro specifica che quel parametro può avere un qualunque numero di parametri (utile per regole con input multipli (padding, margin ecc)
+// @mixin padded($pad...) {
+//     padding: $pad;
 // }
 
-//Interpolazione #{} - iniettare il codice, completare il nome di una proprietà usando una variabile
-@mixin customBorder($side, $color:black, $style:solid, $size:1px) {
-    border-#{$side}: $size $style $color;
-}
+// // @mixin padded($padT, $padR, $padB, $padL) {
+// //     padding: $padT $padR $padB $padL;
+// //     padding: 5px;
+// // }
 
-@mixin background($prop, $val) {
-    background-#{$prop}: $val;
-}
-
-$spacer: 1rem;
-
-@mixin margin($side, $coeff:1) {
-    margin-#{$side}: $coeff * $spacer;
-}
-
-// @mixin marginT($coeff:1) {
-//     margin-top: $coeff * $spacer;
-// }
-// @mixin marginB($coeff:1) {
-//     margin-bottom: $coeff * $spacer;
+// //Interpolazione #{} - iniettare il codice, completare il nome di una proprietà usando una variabile
+// @mixin customBorder($side, $color:black, $style:solid, $size:1px) {
+//     border-#{$side}: $size $style $color;
 // }
 
-h4 {
-    @include customBorder("top");
-    @include customBorder("bottom", green);
-    @include customBorder("left", blue, dashed);
-    @include customBorder("right", blue, dashed, 4px);
-
-    // @include background("image", url('https://picsum.photos/200/300'))
-    @include background("color", #0f0);
-
-    @include margin("top", 3);
-    @include margin("left", 5);
-    // margin-top: 3 * $spacer;
-}
-
-
-
-p {
-    padding-left: 30px;
-    @include testMixin;
-    @include radius(2px);
-}
-
-h2 {
-    @include radius(5px, green);
-
-}
-
-h3 {
-    @include radius(10px);
-    @include padded(10px 30px 50px);
-}
-
-//@content
-//Media Queries - in sass possiamo inserire le media queries dentro al selettore parent
-
-//Normalemnte ripetiamo i tag dentro alle media queries
-// @media screen and (max-width: 700px) {
-//     .responsive {
-//         @include background("color", purple)
-//     }
+// @mixin background($prop, $val) {
+//     background-#{$prop}: $val;
 // }
-//In sass inseriamo le queries nel selttore
-.responsive {
-    @include background("color", blue);
 
-    @media screen and (max-width: 700px) {
-        @include background("color", purple);
-    }
-}
+// $spacer: 1rem;
 
-//siccome possiamo inserire lequeries direttamente nel selettore, possiamo inserire le queries in un mixin che le inserirà nei selettori
-// @mixin responsive {
+// @mixin margin($side, $coeff:1) {
+//     margin-#{$side}: $coeff * $spacer;
+// }
+
+// // @mixin marginT($coeff:1) {
+// //     margin-top: $coeff * $spacer;
+// // }
+// // @mixin marginB($coeff:1) {
+// //     margin-bottom: $coeff * $spacer;
+// // }
+
+// h4 {
+//     @include customBorder("top");
+//     @include customBorder("bottom", green);
+//     @include customBorder("left", blue, dashed);
+//     @include customBorder("right", blue, dashed, 4px);
+
+//     // @include background("image", url('https://picsum.photos/200/300'))
+//     @include background("color", #0f0);
+
+//     @include margin("top", 3);
+//     @include margin("left", 5);
+//     // margin-top: 3 * $spacer;
+// }
+
+
+
+// p {
+//     padding-left: 30px;
+//     @include testMixin;
+//     @include radius(2px);
+// }
+
+// h2 {
+//     @include radius(5px, green);
+
+// }
+
+// h3 {
+//     @include radius(10px);
+//     @include padded(10px 30px 50px);
+// }
+
+// //@content
+// //Media Queries - in sass possiamo inserire le media queries dentro al selettore parent
+
+// //Normalemnte ripetiamo i tag dentro alle media queries
+// // @media screen and (max-width: 700px) {
+// //     .responsive {
+// //         @include background("color", purple)
+// //     }
+// // }
+// //In sass inseriamo le queries nel selttore
+// .responsive {
+//     @include background("color", blue);
+
 //     @media screen and (max-width: 700px) {
 //         @include background("color", purple);
 //     }
 // }
-//In questo caso sopra la queruy potra cambiare solo il backgorund, limitando l'uso di questo mixin
-//possiamo usare @content per scrivere all'interno del mixin quando lo includiamo
-@mixin responsive($maxSize:768px) {
-    @media screen and (max-width: $maxSize) {
-        @content; //content verrà sostituito con il contenuto delle {} quando includiamo il mixin
-    }
-}
 
-.resp {
-    @include background("color", blue);
+// //siccome possiamo inserire lequeries direttamente nel selettore, possiamo inserire le queries in un mixin che le inserirà nei selettori
+// // @mixin responsive {
+// //     @media screen and (max-width: 700px) {
+// //         @include background("color", purple);
+// //     }
+// // }
+// //In questo caso sopra la queruy potra cambiare solo il backgorund, limitando l'uso di questo mixin
+// //possiamo usare @content per scrivere all'interno del mixin quando lo includiamo
+// @mixin responsive($maxSize:768px) {
+//     @media screen and (max-width: $maxSize) {
+//         @content; //content verrà sostituito con il contenuto delle {} quando includiamo il mixin
+//     }
+// }
 
-    @include responsive {
-        @include background("color", purple);
-        padding-top: 50px;
-        font-size: 3em;
-    }
+// .resp {
+//     @include background("color", blue);
 
-    ;
-}
+//     @include responsive {
+//         @include background("color", purple);
+//         padding-top: 50px;
+//         font-size: 3em;
+//     }
 
-@mixin hover {
-    &:hover {
-        @content;
-    }
-}
+//     ;
+// }
 
-$screens: ("xs": 500px,
-    "s": 600px,
-    "md": 768px,
-    "lg": 1024px);
+// @mixin hover {
+//     &:hover {
+//         @content;
+//     }
+// }
 
-h2 {
-    color: blue;
+// $screens: ("xs": 500px,
+//     "s": 600px,
+//     "md": 768px,
+//     "lg": 1024px);
 
-    @include responsive {
-        color: green;
-    }
+// h2 {
+//     color: blue;
 
-    @include responsive(map-get($screens, "xs")) {
-        color: purple;
+//     @include responsive {
+//         color: green;
+//     }
 
-        @include hover {
-            font-size: 10px;
-        }
-    }
-}
+//     @include responsive(map-get($screens, "xs")) {
+//         color: purple;
 
-@mixin generatePartialClass($part) {
-    &-#{$part} {
-        @content;
-        width: 100%;
-        position: relative;
-        display: flex;
-        justify-content: space-between;
-    }
-}
+//         @include hover {
+//             font-size: 10px;
+//         }
+//     }
+// }
 
-.card {
+// @mixin generatePartialClass($part) {
+//     &-#{$part} {
+//         @content;
+//         width: 100%;
+//         position: relative;
+//         display: flex;
+//         justify-content: space-between;
+//     }
+// }
 
-    // &-head == .card-head
-    @include generatePartialClass("head") {
-        color: red;
-    }
+// .card {
 
-    @include generatePartialClass("body") {
-        color: blue;
-    }
+//     // &-head == .card-head
+//     @include generatePartialClass("head") {
+//         color: red;
+//     }
 
-    @include generatePartialClass("foot") {
-        color: green;
-    }
+//     @include generatePartialClass("body") {
+//         color: blue;
+//     }
 
-    // &-body {
-    //     width: 100%;
-    //     position: relative;
-    //     display: flex;
-    //     justify-content: space-between;
+//     @include generatePartialClass("foot") {
+//         color: green;
+//     }
 
-    //     color: blue;
+//     // &-body {
+//     //     width: 100%;
+//     //     position: relative;
+//     //     display: flex;
+//     //     justify-content: space-between;
 
-    // }
+//     //     color: blue;
 
-    // &-head {
-    //     width: 100%;
-    //     position: relative;
-    //     display: flex;
-    //     justify-content: space-between;
+//     // }
 
-    //     color: red;
+//     // &-head {
+//     //     width: 100%;
+//     //     position: relative;
+//     //     display: flex;
+//     //     justify-content: space-between;
 
-    // }
+//     //     color: red;
 
-    // &-foot {
-    //     width: 100%;
-    //     position: relative;
-    //     display: flex;
-    //     justify-content: space-between;
+//     // }
 
-    //     color: green;
+//     // &-foot {
+//     //     width: 100%;
+//     //     position: relative;
+//     //     display: flex;
+//     //     justify-content: space-between;
 
-    // }
+//     //     color: green;
 
-}
+//     // }
+
+// }
 
 
-.table {
-    @include generatePartialClass("head") {
-        font-weight: bold;
-    }
+// .table {
+//     @include generatePartialClass("head") {
+//         font-weight: bold;
+//     }
 
-    @include generatePartialClass("odd") {
-        //&-odd == .table-odd {}
-        background-color: grey;
-    }
-}
+//     @include generatePartialClass("odd") {
+//         //&-odd == .table-odd {}
+//         background-color: grey;
+//     }
+// }
 
-//EXTEND @extend - riprotare il css di una classe all'interno di un altro selettore
-//.button e .accept hanno diverse proprietà uguali, .accept ha una proprietà in più
-// .button,
+// //EXTEND @extend - riprotare il css di una classe all'interno di un altro selettore
+// //.button e .accept hanno diverse proprietà uguali, .accept ha una proprietà in più
+// // .button,
+// // .accept {
+// //     @include radius(5px);
+// //     display: flex;
+// //     justify-content: center;
+// //     align-items: center;
+// //     padding: 10px 15px;
+// //     &:hover {
+// //         background-color: transparent;
+// //         color: purple;
+// //     }
+// // }
+// // .accept {
+// //     background-color: green;
+// // }
 // .accept {
 //     @include radius(5px);
 //     display: flex;
 //     justify-content: center;
 //     align-items: center;
 //     padding: 10px 15px;
+//     background-color: green;
+//     transition: all .3s ease;
+
 //     &:hover {
 //         background-color: transparent;
 //         color: purple;
 //     }
 // }
-// .accept {
+
+// .refuse {
+//     @extend .accept;
+//     background-color: red;
+// }
+
+// //la differenza tra mixin e extend è nella compilazione
+// //mixin aggiungerà le proprietà al selettore
+// //extend creerà un selettore multiplo con le stesse proprietà (più ottimizzato)
+// @mixin provaExtend {
+//     @include radius(5px);
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     padding: 10px 15px;
 //     background-color: green;
+//     transition: all .3s ease;
+
+//     &:hover {
+//         background-color: transparent;
+//         color: purple;
+//     }
 // }
-.accept {
-    @include radius(5px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px 15px;
-    background-color: green;
-    transition: all .3s ease;
 
-    &:hover {
-        background-color: transparent;
-        color: purple;
-    }
-}
+// .acceptProva {
+//     @include provaExtend;
+// }
 
-.refuse {
-    @extend .accept;
-    background-color: red;
-}
+// .refuseProva {
+//     @include provaExtend;
+//     background-color: red;
+// }
 
-//la differenza tra mixin e extend è nella compilazione
-//mixin aggiungerà le proprietà al selettore
-//extend creerà un selettore multiplo con le stesse proprietà (più ottimizzato)
-@mixin provaExtend {
-    @include radius(5px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px 15px;
-    background-color: green;
-    transition: all .3s ease;
+// @mixin keyframes($name) {
+//     @-webkit-keyframes #{$name} {
+//         @content;
+//     }
 
-    &:hover {
-        background-color: transparent;
-        color: purple;
-    }
-}
+//     @-moz-keyframes #{$name} {
+//         @content;
+//     }
 
-.acceptProva {
-    @include provaExtend;
-}
+//     @keyframes #{$name} {
+//         @content;
+//     }
+// }
 
-.refuseProva {
-    @include provaExtend;
-    background-color: red;
-}
+// @mixin transform($trasfromazione...) {
+//     transform: $trasfromazione;
+//     -webkit-transform: $trasfromazione;
+//     -moz-transform: $trasfromazione;
+//     -o-transform: $trasfromazione;
+// }
 
-@mixin keyframes($name) {
-    @-webkit-keyframes #{$name} {
-        @content;
-    }
+// h1 {
+//     @include transform(translateX(50%) scale(120%));
+// }
 
-    @-moz-keyframes #{$name} {
-        @content;
-    }
+// // @-webkit-keyframes animationName {
+// //     from {
+// //         opacity: 0;
+// //     }
+// //     to {
+// //         opacity: 1;
+// //     }
+// // }
+// // @keyframes animationName {
+// //     from {
+// //         opacity: 0;
+// //     }
+// //     to {
+// //         opacity: 1;
+// //     }
+// // }
 
-    @keyframes #{$name} {
-        @content;
-    }
-}
-
-@mixin transform($trasfromazione...) {
-    transform: $trasfromazione;
-    -webkit-transform: $trasfromazione;
-    -moz-transform: $trasfromazione;
-    -o-transform: $trasfromazione;
-}
-
-h1 {
-    @include transform(translateX(50%) scale(120%));
-}
-
-// @-webkit-keyframes animationName {
+// @include keyframes("animationName") {
 //     from {
 //         opacity: 0;
 //     }
-//     to {
-//         opacity: 1;
-//     }
-// }
-// @keyframes animationName {
-//     from {
-//         opacity: 0;
-//     }
+
 //     to {
 //         opacity: 1;
 //     }
 // }
 
-@include keyframes("animationName") {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
 
 
+// //FUNCTIONS @function - la funzione esegue della logica e restituisce (@return) un valore finale
+// //a differenza del mixing che "restistuisce" un set di regole (e queries, selettori, ecc)
 
-//FUNCTIONS @function - la funzione esegue della logica e restituisce (@return) un valore finale
-//a differenza del mixing che "restistuisce" un set di regole (e queries, selettori, ecc)
-
-//alcune funzioni utili già pronte sono (alcune esistono anche in css)
-div {
-    background-image: url("https://picsum.photos/200/300");
-    padding-left: 20px;
-    width: calc(100% - 20px);
-    border-color: lighten(green, 10%)
-}
-
-@function f($a, $b) {
-    @return ($a + $b)+px;
-}
-
-@function rem($px, $rootSize: 16) {
-    @return ($px / $rootSize) * 1rem;
-}
-
-p {
-    font-size: rem(50);
-}
-
-//if
-//può essere usati sia nelle funzioni sia mixin
-@function textColor($bgc) {
-    @if (lightness($bgc) > 50) {
-        @return black;
-    }
-
-    @else {
-        @return white;
-    }
-}
-
-@mixin theme($backgroundColor, $darkThemeOn:false) {
-    background-color: $backgroundColor;
-    color: textColor($backgroundColor);
-    &:hover {
-        @if $darkThemeOn {
-            background-color: black;
-        }
-        @else {
-            background-color: white;
-        }
-    }
-}
-
-$bg: #ffff87;
-
-span {
-    // background-color: $bg;
-    @include theme($bg, true)
-}
-
-//cicli each for e while - @each @for @while
-//@each serve per le liste di dati
-// .foto-a {
-//     background-image: url("dir/to/photos/a.png");
+// //alcune funzioni utili già pronte sono (alcune esistono anche in css)
+// div {
+//     background-image: url("https://picsum.photos/200/300");
+//     padding-left: 20px;
+//     width: calc(100% - 20px);
+//     border-color: lighten(green, 10%)
 // }
-// .foto-b {
-//     background-image: url("dir/to/photos/b.png");
+
+// @function f($a, $b) {
+//     @return ($a + $b)+px;
 // }
-// .foto-c {
-//     background-image: url("dir/to/photos/c.png");
+
+// @function rem($px, $rootSize: 16) {
+//     @return ($px / $rootSize) * 1rem;
 // }
-// .foto-d {
-//     background-image: url("dir/to/photos/d.png");
+
+// p {
+//     font-size: rem(50);
 // }
+
+// //if
+// //può essere usati sia nelle funzioni sia mixin
+// @function textColor($bgc) {
+//     @if (lightness($bgc) > 50) {
+//         @return black;
+//     }
+
+//     @else {
+//         @return white;
+//     }
+// }
+
+// @mixin theme($backgroundColor, $darkThemeOn:false) {
+//     background-color: $backgroundColor;
+//     color: textColor($backgroundColor);
+//     &:hover {
+//         @if $darkThemeOn {
+//             background-color: black;
+//         }
+//         @else {
+//             background-color: white;
+//         }
+//     }
+// }
+
+// $bg: #ffff87;
+
+// span {
+//     // background-color: $bg;
+//     @include theme($bg, true)
+// }
+
+// //cicli each for e while - @each @for @while
+// //@each serve per le liste di dati
+// // .foto-a {
+// //     background-image: url("dir/to/photos/a.png");
+// // }
+// // .foto-b {
+// //     background-image: url("dir/to/photos/b.png");
+// // }
+// // .foto-c {
+// //     background-image: url("dir/to/photos/c.png");
+// // }
+// // .foto-d {
+// //     background-image: url("dir/to/photos/d.png");
+// // }
+// // .foto {
+// //     &-a {
+// //         background-image: url("dir/to/photos/a.png");
+// //     }
+// //     &-b {
+// //         background-image: url("dir/to/photos/b.png");
+// //     }
+// //     &-c {
+// //         background-image: url("dir/to/photos/c.png");
+// //     }
+// //     &-d {
+// //         background-image: url("dir/to/photos/d.png");
+// //     }
+// // }
+
+// @mixin fotoBg($foto) {
+//     &-#{$foto}{ background-image: url("dir/to/photo/"+$foto+".png"); }
+// }
+
+// // .foto {
+// //     @include fotoBg("a");
+// //     @include fotoBg("b");
+// //     @include fotoBg("c");
+// //     @include fotoBg("d");
+// // }
+
+// $photos: "a", "b", "c", "d";
 // .foto {
-//     &-a {
-//         background-image: url("dir/to/photos/a.png");
-//     }
-//     &-b {
-//         background-image: url("dir/to/photos/b.png");
-//     }
-//     &-c {
-//         background-image: url("dir/to/photos/c.png");
-//     }
-//     &-d {
-//         background-image: url("dir/to/photos/d.png");
+//     @each $p in $photos {
+//         // &-#{$p} { background-image: url("dir/to/photo/"+$p+".png")}
+//         @include fotoBg($p);
 //     }
 // }
 
-@mixin fotoBg($foto) {
-    &-#{$foto}{ background-image: url("dir/to/photo/"+$foto+".png"); }
-}
 
-// .foto {
-//     @include fotoBg("a");
-//     @include fotoBg("b");
-//     @include fotoBg("c");
-//     @include fotoBg("d");
+// $div: ("span", black, false, 5),(".classe", red, true, 20),("h1 p", blue, true, 5);
+
+// @mixin defaultDiv($bg, $bordered, $pad) {
+//     background-color: $bg;
+//     padding: $pad;
+//     @if $bordered {
+//         border: solid 1px black;
+//     } @else {
+//         border: none;
+//     }
 // }
 
-$photos: "a", "b", "c", "d";
-.foto {
-    @each $p in $photos {
-        // &-#{$p} { background-image: url("dir/to/photo/"+$p+".png")}
-        @include fotoBg($p);
-    }
-}
+// @each $Dsel, $Dbg, $Dbordered, $Dpad in $div {
+//     // @include deafultDiv($Dsel, $Dbg, $Dbordered, $Dpad);
+//     // #{$Dsel} {
+//     //     background-color: $Dbg;
+//     //     padding: $Dpad;
+//     //     @if $Dbordered {
+//     //         border: solid 1px black;
+//     //     } @else {
+//     //         border: none;
+//     //     }
+//     // }
+// }
 
+// //@for
+// @for $i from 1 through 3 {
+//     li:nth-of-type(#{$i}){
+//         font-size: $i * 10px;
+//     }
+// }
+// @for $i from 1 to 3 {}
 
-$div: ("span", black, false, 5),(".classe", red, true, 20),("h1 p", blue, true, 5);
+// //@while
+// $j: 0;
+// @while $j < 5 {
+//     li:nth-of-type(#{$j}){
+//         font-size: $j * 10px;
+//     }
+//     .foto-#{$j}{
+//         margin-left: 10px * $j;
+//     }
+//     //l'operazione di aumento va fouri da ogni output del while
+//     $j: $j+1;
+// }
 
-@mixin defaultDiv($bg, $bordered, $pad) {
-    background-color: $bg;
-    padding: $pad;
-    @if $bordered {
-        border: solid 1px black;
-    } @else {
-        border: none;
-    }
-}
+// $f: "Helvetica";
+// @include getGooleFontMixin($f);
+// p {
+//     font-family: $f;
+// }
 
-@each $Dsel, $Dbg, $Dbordered, $Dpad in $div {
-    // @include deafultDiv($Dsel, $Dbg, $Dbordered, $Dpad);
-    // #{$Dsel} {
-    //     background-color: $Dbg;
-    //     padding: $Dpad;
-    //     @if $Dbordered {
-    //         border: solid 1px black;
-    //     } @else {
-    //         border: none;
-    //     }
-    // }
-}
+// @import url(getGoogleFont("Roboto")); //getGoogleFont() funzione custom che restituisce l'url da iomportare
+// //oppure
+// @include getGooleFontMixin("Roboto"); //getGoogleFontMixin() mixin che inserisce il comando di import con url corretto
 
-//@for
-@for $i from 1 through 3 {
-    li:nth-of-type(#{$i}){
-        font-size: $i * 10px;
-    }
-}
-@for $i from 1 to 3 {}
+// * {
+//     background-image: url("dir/"+$x+".png");
+//     background-image: url(dir/+.png); //se non volgiamo usare una stringa dobbiamo togliere le " dalla stringa che ci arrivas come paramentro
+// }
 
-//@while
-$j: 0;
-@while $j < 5 {
-    li:nth-of-type(#{$j}){
-        font-size: $j * 10px;
-    }
-    .foto-#{$j}{
-        margin-left: 10px * $j;
-    }
-    //l'operazione di aumento va fouri da ogni output del while
-    $j: $j+1;
-}
+// @mixin getGoogleFontMixin($family) {
+//     $family: unquote($family);
+//     // url(https://fonts.googleapis.com/css2?family=NAME_FAMILY) -> #{} inserisce il parametro così com'è (senza togliere le ")
+// }
+
